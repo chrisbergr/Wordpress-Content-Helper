@@ -40,14 +40,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function convert_to_ascii( $str ) {
 
-    $pieces = str_split( trim( $str ) );
-    $new_str = '';
+	$pieces = str_split( trim( $str ) );
+	$new_str = '';
 
-    foreach( $pieces as $val ) {
-        $new_str .= '&#' . ord( $val ) . ';';
-    }
+	foreach( $pieces as $val ) {
+		$new_str .= '&#' . ord( $val ) . ';';
+	}
 
-    return $new_str;
+	return $new_str;
 
 }
 
