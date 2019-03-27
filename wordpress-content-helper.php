@@ -29,38 +29,52 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+/**
+ * Returns string with ASCII convertet characters
+ *
+ * @since 0.9.1
+ * @access public
+ *
+ * @param string $str
+ * @return string
+ */
 function convert_to_ascii( $str ) {
+
     $pieces = str_split( trim( $str ) );
     $new_str = '';
+
     foreach( $pieces as $val ) {
         $new_str .= '&#' . ord( $val ) . ';';
     }
+
     return $new_str;
+
 }
 
-function process_email( $atts, $content = false ) {
-    extract( shortcode_atts( array(
-        "mailto" => false,
-    ), $atts ) );
-    if ( ! $mailto && ! $content ) {
-        if ( ! empty( $atts[0] ) ) {
-            $mailto = str_replace( '=', '', str_replace( '"', '', $atts[0] ) );
-            $content = $mailto;
-        } else {
-            return 'EMAIL MISSING';
-        }
-    }
-    if ( ! $mailto ) {
-        $mailto = $content;
-    }
-    if ( ! $content ) {
-        $content = $mailto;
-    }
-    $out = sprintf(
-        '<a href="%s">%s</a>',
-        convert_to_ascii( 'mailto:' . $mailto ),
-        convert_to_ascii( $content )
-    );
-    return $out;
+/**
+ * Convert email addresses into ASCII strings to optimistically protect them from spambots
+ *
+ * Output:
+ * <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#97;&#105;&#108;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#76;&#105;&#110;&#107;&#116;&#105;&#116;&#108;&#101;</a>
+ *
+ * @since 0.9.1
+ * @access public
+ *
+ * @param string $content
+ * @return void
+ */
+function process_email( $content ) {
+
+	$pattern = '/(mailto\:)?[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i';
+	preg_match_all( $pattern, $content, $matches );
+
+	foreach ( $matches[0] as $key => $replacement ) {
+		$content = preg_replace( $pattern, convert_to_ascii( $replacement ), $content, 1 );
+	}
+
+	return $content;
+
 }
-add_shortcode( 'email', 'process_email' );
+add_filter( 'the_content', 'process_email' );
+add_filter( 'the_excerpt', 'process_email' );
+add_filter( 'widget_text', 'process_email' );

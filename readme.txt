@@ -16,7 +16,7 @@ WordPress Content Helper adds some helper functionality to the contents of a Wor
 
 Major features in WordPress Content Helper:
 
-* Convert Email-addresses into ASCII strings to optimistically protect them from spambots.
+* Convert email addresses into ASCII strings to optimistically protect them from spambots.
 
 == Installation ==
 
