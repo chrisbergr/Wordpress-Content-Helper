@@ -60,8 +60,8 @@ function convert_to_ascii( $str ) {
  * @since 0.9.1
  * @access public
  *
- * @param string $content
- * @return void
+ * @param string $content Content from the WordPress filter
+ * @return string
  */
 function process_email( $content ) {
 
