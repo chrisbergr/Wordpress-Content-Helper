@@ -29,8 +29,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-// test
-
 function convert_to_ascii( $str ) {
     $pieces = str_split( trim( $str ) );
     $new_str = '';
