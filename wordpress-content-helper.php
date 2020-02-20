@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $str
  * @return string
  */
-function convert_to_ascii( $str ) {
+function wpch_convert_to_ascii( $str ) {
 
 	$pieces = str_split( trim( $str ) );
 	$new_str = '';
@@ -63,18 +63,18 @@ function convert_to_ascii( $str ) {
  * @param string $content Content from the WordPress filter
  * @return string
  */
-function process_email( $content ) {
+function wpch_process_email( $content ) {
 
 	$pattern = '/(mailto\:)?[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i';
 	preg_match_all( $pattern, $content, $matches );
 
 	foreach ( $matches[0] as $key => $replacement ) {
-		$content = preg_replace( $pattern, convert_to_ascii( $replacement ), $content, 1 );
+		$content = preg_replace( $pattern, wpch_convert_to_ascii( $replacement ), $content, 1 );
 	}
 
 	return $content;
 
 }
-add_filter( 'the_content', 'process_email' );
-add_filter( 'the_excerpt', 'process_email' );
-add_filter( 'widget_text', 'process_email' );
+add_filter( 'the_content', 'wpch_process_email' );
+add_filter( 'the_excerpt', 'wpch_process_email' );
+add_filter( 'widget_text', 'wpch_process_email' );
